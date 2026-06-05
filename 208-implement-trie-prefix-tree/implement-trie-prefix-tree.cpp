@@ -1,51 +1,43 @@
 class Trie {
-    struct node{
-        node* children[26];
+    struct Node{
         bool isEnd;
-        node(){
+        Node* children[26];
+        Node(){
             isEnd=false;
-            for(int i=0;i<26;i++){
-                children[i]=NULL;
-            }
+            for(int i=0;i<26;i++)children[i]=NULL;
         }
     };
-    node* root;
+    Node* root;
 public:
     Trie() {
-        root=new node();
+        root=new Node();
     }
     
     void insert(string word) {
-        node* curr=root;
+        Node* curr=root;
         for(char ch:word){
             int idx=ch-'a';
-            if(curr->children[idx]==NULL){
-                curr->children[idx]=new node();
-            }
+            if(!curr->children[idx])curr->children[idx]=new Node();
             curr=curr->children[idx];
         }
         curr->isEnd=true;
     }
     
     bool search(string word) {
-        node* curr=root;
+        Node* curr=root;
         for(char ch:word){
             int idx=ch-'a';
-            if(curr->children[idx]==NULL){
-                return false;
-            }
+            if(!curr->children[idx])return false;
             curr=curr->children[idx];
         }
         return curr->isEnd;
     }
     
-    bool startsWith(string word) {
-        node* curr=root;
-        for(char ch:word){
+    bool startsWith(string prefix) {
+        Node* curr=root;
+        for(char ch:prefix){
             int idx=ch-'a';
-            if(curr->children[idx]==NULL){
-                return false;
-            }
+            if(!curr->children[idx])return false;
             curr=curr->children[idx];
         }
         return true;
